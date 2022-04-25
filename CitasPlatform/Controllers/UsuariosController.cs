@@ -22,8 +22,6 @@ namespace CitasPlatform.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            Usuario user = new Usuario();
-
             return View(await _context.Usuario.ToListAsync());
         }
 
@@ -56,11 +54,8 @@ namespace CitasPlatform.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Nombre,Apellidos,Matricula,Correo,Telefono")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("UsuarioId,Nombre,Apellidos,Matricula,Correo,Telefono,Rol")] Usuario usuario)
         {
-            usuario.UsuarioId = new UUID();
-            usuario.Rol = 1;
-
             if (ModelState.IsValid)
             {
                 _context.Add(usuario);
