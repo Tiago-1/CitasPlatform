@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-8" align="center">
+        <figure class="imagen">
+            <img src="https://www.totem.com.mx/wp-content/uploads/2021/04/creatividad.jpg">
+        </figure>
+    </div>
+    <div class="col-4 text-light bg-info p-2" style="height:calc(100vh-30px)">
+        <h2 >Bienvenido!</h2>
+        <form class="container" method="GET" action="/CitasAlumno">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                    placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-warning" >We'll never share your email with anyone
+                    else.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+             <center>
+                <button type="submit" class="btn btn-warning text-light">Acceder</button>
+             </center>
+        </form>
+        <p>
+            <center>
+                Crear Cuenta
+            </center>
+        </p>
+    </div>
+</div>
