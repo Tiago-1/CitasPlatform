@@ -26,7 +26,7 @@ namespace CitasPlatform.Controllers
         }
 
         // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -66,7 +66,7 @@ namespace CitasPlatform.Controllers
         }
 
         // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +86,7 @@ namespace CitasPlatform.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("UsuarioId,Nombre,Apellidos,Matricula,Correo,Telefono,Rol")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nombre,Apellidos,Matricula,Correo,Telefono,Rol")] Usuario usuario)
         {
             if (id != usuario.UsuarioId)
             {
@@ -117,7 +117,7 @@ namespace CitasPlatform.Controllers
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +137,7 @@ namespace CitasPlatform.Controllers
         // POST: Usuarios/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
             _context.Usuario.Remove(usuario);
@@ -145,7 +145,7 @@ namespace CitasPlatform.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UsuarioExists(string id)
+        private bool UsuarioExists(int id)
         {
             return _context.Usuario.Any(e => e.UsuarioId == id);
         }
