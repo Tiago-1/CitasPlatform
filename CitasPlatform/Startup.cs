@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using CitasPlatform.Data;
+using CitasPlatform.Controllers.Error;
 
 namespace CitasPlatform
 {
@@ -46,6 +47,9 @@ namespace CitasPlatform
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // global error handler
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseRouting();
 

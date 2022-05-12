@@ -12,6 +12,7 @@ namespace CitasPlatform.Models
         public string Correo { get; set; }
         public string Telefono { get; set; }
         public int Rol { get; set; }
+        public string Pass { get; set; }
 
 
     }

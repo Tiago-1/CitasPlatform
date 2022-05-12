@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using CitasPlatform.Controllers.Error;
 
 namespace CitasPlatform.Controllers
 {
@@ -46,27 +47,34 @@ namespace CitasPlatform.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginModel model)
         {
-            Console.WriteLine(model.user);
+
             var redirect = RedirectToAction();
+
             try
             {
-                var user = from m in _context.Usuario
-                             select m;
-
-                user = user.Where(s => s.Correo == model.user);
-
-                Console.WriteLine(user.ToList().Count());
+                var user = from m in _context.Usuario select m;
+                user = user.Where(s => s.Correo == model.user && s.Pass == model.password);
                 
                 if(user.ToList().Count == 0)
                 {
-                    return View();
+                    Console.WriteLine("se suppone que mandara la exceptcion");
+                    throw new AppException("Email or password is incorrect");
                 }
 
                 // if (existeusuario && contrase;a es correcta y esAlumno)
-
-                redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
-                redirect.ControllerName = "CitasAlumno"; // or can use nameof("") like  nameof(YourCtrl);
-                return redirect;
+                if(user.ToList().First().Rol == 1)
+                {
+                    redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
+                    redirect.ControllerName = "CitasAlumno"; // or can use nameof("") like  nameof(YourCtrl);
+                    return redirect;
+                }
+                else
+                {
+                    redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
+                    redirect.ControllerName = "Admin"; // or can use nameof("") like  nameof(YourCtrl);
+                    return redirect;
+                }
+               
                 //else if (existeusuario && contrase;a es correcta y esPsicologa)
                 // else 
                 //return view
