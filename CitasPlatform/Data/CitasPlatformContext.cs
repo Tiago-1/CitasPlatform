@@ -16,5 +16,7 @@ namespace CitasPlatform.Data
 
         public DbSet<CitasPlatform.Models.Usuario> Usuario { get; set; }
 
+        public DbSet<CitasPlatform.Models.Cita> Cita { get; set; }
+
     }
 }

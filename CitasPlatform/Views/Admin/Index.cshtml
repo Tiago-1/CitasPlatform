@@ -1,6 +1,64 @@
-﻿@{
+﻿@model IEnumerable<CitasPlatform.Models.Cita>
+
+@{
     ViewData["Title"] = "Citas Psicologa";
 }
+
+<style>
+    ul,li{
+        list-style-type: none;
+         padding: 0; /* Remove padding */
+         margin: 0; /* Remove margins */
+    }
+    button{
+        margin:3px;
+    }
+   
+    .intinerario-card{
+        display:flex;
+        flex-direction: row;
+    }
+    #intinerario-hours{
+        padding:10px;
+        width:15%;
+    }
+    #intinerario-info{
+        padding:10px;
+        width:85%;
+        display:flex;
+        flex-direction:row;
+    }
+
+     #intinerario-info_data{
+        width:60%;
+        display:flex;
+     }
+     #intinerario-info_actions{
+        width:40%;
+        display:flex;
+        flex-direction: row;
+        justify-content: right;
+     }
+
+     .contenedor{
+         display:flex;
+         flex-direction:row;
+     }
+
+     .intinerio-display{
+         width:45%
+     }
+    
+     .image-psic{
+         width:55%;
+         display:flex;
+         justify-content:center;
+         align-items:center;
+     }
+
+</style>
+
+
 
 <div>
 
@@ -35,6 +93,54 @@
 </nav>
     <div class= "container" style="padding-top:20px">
     <h3>Bienvenido Administrador!</h3>
+    </div>
+
+    <div class="container-fluid contenedor">
+        <div class="intinerio-display">
+
+            <div class="intinerario-header">
+                <h4>Intinerario</h4>
+            </div>
+           <div class="intinerario-body ">
+               <ul>
+
+                        @foreach (var item in Model) 
+                {
+                   <li class="card m-2">
+                       <div class="intinerario-card">
+                           <div id="intinerario-hours" class="bg-warning font-weight-bold">
+                               <ul>
+                                   <li>@Html.DisplayFor(modelItem => item.Hora_Inicio)</li>
+                                   <li>@Html.DisplayFor(modelItem => item.Hora_Final)</li>
+                               </ul>
+                           </div>
+                           <div id= "intinerario-info" class="bg-light">
+                                    <div id= "intinerario-info_data" >
+                                         <ul >
+                                           <li>@Html.DisplayFor(modelItem => item.UsuarioId)</li>
+                                           <li>Razon: @Html.DisplayFor(modelItem => item.Tipo)</li>
+                                         </ul>
+                                    </div>
+                                  
+                                    <div id= "intinerario-info_actions" >
+                                         <button  class="btn btn-info">Detalles</button>
+                                         <button class="btn btn-danger">Eliminar</button>                                  
+                                    </div>
+                            </div>
+                               
+                       </div>
+                   </li>
+                   }
+               </ul>
+           </div>
+
+
+        </div>
+        <div class="image-psic" >
+            <figure class="imagen" style="width:50%;">
+                <img src="https://1.bp.blogspot.com/-_dv7Zy9V2ys/VrgytdVvmjI/AAAAAAAAAv8/1MIPyeS-cF0/s1600/psicologia%2Beducativa.png" style="width:100%;">
+            </figure>
+        </div>
     </div>
 
 </div>

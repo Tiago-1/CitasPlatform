@@ -7,11 +7,13 @@ namespace CitasPlatform.Models
     public class Cita
 
     {
-        public string CitaId { get; set; }
+        public int CitaId { get; set; }
 
         [Key]
         [ForeignKey("Usuario")]
-        public string UsuarioId { get; set; }
+        public int UsuarioId { get; set; }
+
+        public string UsuarioName { get; set; }
 
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
