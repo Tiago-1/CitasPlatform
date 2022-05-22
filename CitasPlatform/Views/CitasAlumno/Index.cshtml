@@ -1,40 +1,108 @@
 ﻿@{
     ViewData["Title"] = "Citas Alumno";
 }
+@model Cita
 
 <div>
 
-  <nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" 
-    aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
-    <a class="navbar-brand font-weight-bold" href="#">Plataforma Citas Online</a>
-    <div class="navbar-nav mr-auto mt-2 mt-lg-0">
-     
+    <nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
+            <a class="navbar-brand font-weight-bold" href="#">Plataforma Citas Online</a>
+            <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+            </div>
+            <div class="form-inline my-2 my-lg-0">
+
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Cerrar Sesion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" style="padding-top:20px">
+        <h1>Bienvenidos Alumnos!</h1>
     </div>
-    <div class="form-inline my-2 my-lg-0">
-      
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Nosotros</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="#">Contacto</a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link active" href="/">Cerrar Sesion</a>
-      </li>
-    </ul>
-    </div>
-  </div>
-</nav>
-    <div class= "container" style="padding-top:20px">
-    <h3>Bienvenido Alumno!</h3>
+
+    <div class="row" style="height:97vh">
+        <div class="col-7" align="center">
+            <form method= "post" action ="CitasAlumno/createCita">
+                <br>
+                <h2> Si necesitas hablar con alguien contactame</h2>
+                <br>
+
+                <h3> Agenda tu cita aquí </h3>
+
+                <div class="form-group">
+
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.citaDateTime, "{0:yyyy-MM-ddThh:mm:ss}", new { @class = "form-control", type = "datetime-local" })
+                        @Html.ValidationMessageFor(m => m.citaDateTime, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <br>
+
+                <p>
+
+                    <label for="asunto" class="colocar_asunto">
+                        Asunto
+                        <span class="obligatorio"></span>
+                    </label>
+                    @{
+                        List<SelectListItem> items = new List<SelectListItem>();
+                        items.Add(new SelectListItem { Text = "Cita Individual", Value = "individual" });
+                        items.Add(new SelectListItem { Text = "Cita en grupo", Value = "grupo" });
+                        items.Add(new SelectListItem { Text = "Citacanalizada", Value = "canalizada" });
+                    @Html.DropDownList("Tipo",items,"--Select TeaType--")
+                    }
+                </p>
+
+                <br>
+
+                <p>
+                    <label for="mensaje" name="Descripcion" class="colocar_mensaje">
+                        Mensaje
+                        <span class="obligatorio"></span>
+                    </label>
+                   @Html.TextAreaFor(m => m.Descripcion, new { @style = "color:red" }) 
+                </p>
+
+
+                <br>
+
+                <!-- button type="submit" name="enviar_formulario" id="enviar" > <form action="" > Enviar</form > </-button! -->
+                <p name="enviar_formulario" method="post" action="/Enviar">
+                    <!-- Botón de envío de formulario -->
+                    <input type="submit" value="Agendar Cita" />
+                </p>
+
+
+                <p class="aviso">
+                    <span class="obligatorio"> * </span> los campos son obligatorios.
+                </p>
+            </form>
+        </div>
+        <div class="col-5 text-light" padding:60px;">
+            <figure class="imagen">
+                <img src="https://clinicavicent.com/wp-content/uploads/2021/06/psicologia.png" style="width:75%;margin-top:50px">
+            </figure>
+        </div>
     </div>
 
 </div>

@@ -25,6 +25,8 @@ namespace CitasPlatform.Controllers
         {
             var dateAndTime = DateTime.Now;
             var date = dateAndTime.Date;
+
+            // Consulta 
             List<Cita> cita = await _context.Cita
                                .Where(b => b.Fecha == date)
                                .OrderBy(o => o.Hora_Inicio)
@@ -32,15 +34,30 @@ namespace CitasPlatform.Controllers
                                {
                                    Fecha = b.Fecha,
                                    CitaId = b.CitaId,
-                                   UsuarioId = b.UsuarioId,
+                                   Estatus = b.Estatus,
                                    Tipo = b.Tipo,
                                    Descripcion = b.Descripcion,
                                    Hora_Inicio = b.Hora_Inicio,
-                                   Hora_Final = b.Hora_Final
+                                   Hora_Final = b.Hora_Final,
+                                   H_Final = b.Hora_Final.ToString().Replace('.',':'),
+                                   H_Inicio = b.Hora_Inicio.ToString().Replace('.', ':')
                                }).ToListAsync();
 
             return View(cita);
         }
+
+        public async Task<string> GetUsersList(int citaId)
+        {
+            List<String> usuariosV = await _context.Cita_Usuario
+                                    .Where(cu => cu.CitaId == citaId)
+                                    .Select(cu => cu.UsuarioId.ToString())
+                                    .ToListAsync();
+
+            string usuariosVp = string.Join(',', usuariosV);
+            return usuariosVp;
+        }
+
+
 
     }
 }

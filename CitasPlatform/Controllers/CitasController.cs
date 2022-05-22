@@ -25,24 +25,7 @@ namespace CitasPlatform.Controllers
             return View(await _context.Cita.ToListAsync());
         }
 
-        // GET: Citas/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cita = await _context.Cita
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
-            if (cita == null)
-            {
-                return NotFound();
-            }
-
-            return View(cita);
-        }
-
+      
         // GET: Citas/Create
         public IActionResult Create()
         {
@@ -81,59 +64,8 @@ namespace CitasPlatform.Controllers
             return View(cita);
         }
 
-        // POST: Citas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CitaId,UsuarioId,Fecha,Hora_Inicio,Hora_Final,Tipo,Estatus,Descripcion")] Cita cita)
-        {
-            if (id != cita.UsuarioId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(cita);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CitaExists(cita.UsuarioId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(cita);
-        }
-
-        // GET: Citas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var cita = await _context.Cita
-                .FirstOrDefaultAsync(m => m.UsuarioId == id);
-            if (cita == null)
-            {
-                return NotFound();
-            }
-
-            return View(cita);
-        }
-
+       
+ 
         // POST: Citas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -145,9 +77,6 @@ namespace CitasPlatform.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CitaExists(int id)
-        {
-            return _context.Cita.Any(e => e.UsuarioId == id);
-        }
+        
     }
 }

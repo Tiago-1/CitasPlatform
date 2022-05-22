@@ -9,12 +9,6 @@ namespace CitasPlatform.Models
     {
         public int CitaId { get; set; }
 
-        [Key]
-        [ForeignKey("Usuario")]
-        public int UsuarioId { get; set; }
-
-        public string UsuarioName { get; set; }
-
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
         public decimal Hora_Inicio { get; set; }
@@ -22,5 +16,16 @@ namespace CitasPlatform.Models
         public string Tipo { get; set; }
         public string Estatus { get; set; }
         public string? Descripcion { get; set; }
+
+        // Informacion complementaria
+        [NotMapped]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-ddThh:mm:ss}")]
+        public DateTime citaDateTime { get; set; }
+
+        [NotMapped]
+        public string H_Inicio { get; set; }
+        [NotMapped]
+        public string H_Final { get; set; }
     }
 }
