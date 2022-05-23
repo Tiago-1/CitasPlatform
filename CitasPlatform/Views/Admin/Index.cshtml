@@ -21,6 +21,9 @@
     #intinerario-hours{
         padding:10px;
         width:15%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
     }
     #intinerario-info{
         padding:10px;
@@ -45,12 +48,17 @@
          flex-direction:row;
      }
 
+     .intinerario-header{
+         padding:10px;
+     }
+
      .intinerio-display{
-         width:45%
+         width:50%;
+         padding:10px;
      }
     
      .image-psic{
-         width:55%;
+         width:50%;
          display:flex;
          justify-content:center;
          align-items:center;
@@ -76,13 +84,10 @@
       
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/Admin">Inicio <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Nosotros</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link " href="#">Contacto</a>
+        <a class="nav-link" href="/Admin/Historial">Historial</a>
       </li>
        <li class="nav-item">
         <a class="nav-link active" href="/">Cerrar Sesion</a>
@@ -133,8 +138,6 @@
                    }
                </ul>
            </div>
-
-
         </div>
         <div class="image-psic" >
             <figure class="imagen" style="width:50%;">

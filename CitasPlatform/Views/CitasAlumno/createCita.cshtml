@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Citas Alumno";
+}
+@model Cita
+<style>
+    .card-success{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    .success{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        margin:100px;
+        width:50%;
+        padding:50px;
+    }
+</style>
+
+    <nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
+            <a class="navbar-brand font-weight-bold" href="#">Plataforma Citas Online</a>
+            <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+            </div>
+            <div class="form-inline my-2 my-lg-0">
+
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/CitasAlumno">Inicio <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/CitasAlumno/Cita">Crear Cita</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Cerrar Sesion</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+       <div class="card-success">
+
+        <div class="card card-body success">
+            <img src="https://icons.veryicon.com/png/o/miscellaneous/cloud-call-center/success-24.png" style="width:100px"/>
+            <h4 class="m-2">Cita Agendada Correctamente</h4>
+
+            <p>Sera un placer atenderte!!!</p>
+
+            <a class="btn btn-success" href="/CitasAlumno">Regresar</a>
+        </div>
+        </div>
+    </div>

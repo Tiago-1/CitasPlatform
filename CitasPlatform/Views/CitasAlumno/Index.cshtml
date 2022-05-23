@@ -3,6 +3,65 @@
 }
 @model Cita
 
+<style>
+    ul,li{
+        list-style-type: none;
+         padding: 0; /* Remove padding */
+         margin: 0; /* Remove margins */
+    }
+    button{
+        margin:3px;
+    }
+    .imagen{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+   
+    .intinerario-card{
+        display:flex;
+        flex-direction: row;
+    }
+    #intinerario-hours{
+        padding:10px;
+        width:15%;
+    }
+    #intinerario-info{
+        padding:10px;
+        width:85%;
+        display:flex;
+        flex-direction:row;
+    }
+
+     #intinerario-info_data{
+        width:60%;
+        display:flex;
+     }
+     #intinerario-info_actions{
+        width:40%;
+        display:flex;
+        flex-direction: row;
+        justify-content: right;
+     }
+
+     .contenedor{
+         display:flex;
+         flex-direction:row;
+     }
+
+     .intinerio-display{
+         width:80%
+     }
+    
+     .image-psic{
+         width:55%;
+         display:flex;
+         justify-content:center;
+         align-items:center;
+     }
+
+</style>
+
 <div>
 
     <nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
@@ -19,13 +78,13 @@
 
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/CitasAlumno">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Nosotros</a>
+                        <a class="nav-link active" href="/CitasAlumno/Cita">Crear Cita</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Contacto</a>
+                        <a class="nav-link active" href="/CitasAlumno/Contact">Contacto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/">Cerrar Sesion</a>
@@ -34,74 +93,57 @@
             </div>
         </div>
     </nav>
-    <div class="container" style="padding-top:20px">
-        <h1>Bienvenidos Alumnos!</h1>
-    </div>
-
-    <div class="row" style="height:97vh">
-        <div class="col-7" align="center">
-            <form method= "post" action ="CitasAlumno/createCita">
-                <br>
-                <h2> Si necesitas hablar con alguien contactame</h2>
-                <br>
-
-                <h3> Agenda tu cita aquí </h3>
-
-                <div class="form-group">
-
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(m => m.citaDateTime, "{0:yyyy-MM-ddThh:mm:ss}", new { @class = "form-control", type = "datetime-local" })
-                        @Html.ValidationMessageFor(m => m.citaDateTime, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
 
-                <br>
-
-                <p>
-
-                    <label for="asunto" class="colocar_asunto">
-                        Asunto
-                        <span class="obligatorio"></span>
-                    </label>
-                    @{
-                        List<SelectListItem> items = new List<SelectListItem>();
-                        items.Add(new SelectListItem { Text = "Cita Individual", Value = "individual" });
-                        items.Add(new SelectListItem { Text = "Cita en grupo", Value = "grupo" });
-                        items.Add(new SelectListItem { Text = "Citacanalizada", Value = "canalizada" });
-                    @Html.DropDownList("Tipo",items,"--Select TeaType--")
-                    }
-                </p>
-
-                <br>
-
-                <p>
-                    <label for="mensaje" name="Descripcion" class="colocar_mensaje">
-                        Mensaje
-                        <span class="obligatorio"></span>
-                    </label>
-                   @Html.TextAreaFor(m => m.Descripcion, new { @style = "color:red" }) 
-                </p>
-
-
-                <br>
-
-                <!-- button type="submit" name="enviar_formulario" id="enviar" > <form action="" > Enviar</form > </-button! -->
-                <p name="enviar_formulario" method="post" action="/Enviar">
-                    <!-- Botón de envío de formulario -->
-                    <input type="submit" value="Agendar Cita" />
-                </p>
-
-
-                <p class="aviso">
-                    <span class="obligatorio"> * </span> los campos son obligatorios.
-                </p>
-            </form>
-        </div>
-        <div class="col-5 text-light" padding:60px;">
+    <div class="row" style="height:80%">
+        <div class="col-6" padding:60px;">
             <figure class="imagen">
-                <img src="https://clinicavicent.com/wp-content/uploads/2021/06/psicologia.png" style="width:75%;margin-top:50px">
+                <img src="https://cdn.pixabay.com/photo/2020/08/11/14/34/greeting-5480092_960_720.png" style="width:60%;margin-top:50px">
             </figure>
+        </div>
+        <div class="col-6" align="center">
+             
+           
+             <div class="intinerio-display">
+
+            <div class="intinerario-header p-lg-5">
+                <h4>Citas Pendientes</h4>
+            </div>
+           <div class="intinerario-body ">
+               <ul>
+
+                      
+                   <li class="card m-2">
+                       <div class="intinerario-card">
+                           <div id="intinerario-hours" class="bg-warning font-weight-bold">
+                               <ul>
+                                   <li>8:00</li>
+                                   <li>9:00</li>
+                               </ul>
+                           </div>
+                           <div id= "intinerario-info" class="bg-light">
+                                    <div id= "intinerario-info_data" >
+                                         <ul >
+                                           <li>24 Mayo 2022</li>
+                                           <li>Salon Biblioteca </li>
+                                         </ul>
+                                    </div>
+                                  
+                                    <div id= "intinerario-info_actions" >
+                                         <button  class="btn btn-info">Detalles</button>
+                                         <button class="btn btn-danger">Eliminar</button>                                  
+                                    </div>
+                            </div>
+                               
+                       </div>
+                   </li>
+                   
+               </ul>
+           </div>
+        </div>
+
+
+
         </div>
     </div>
 
