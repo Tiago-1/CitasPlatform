@@ -20,6 +20,8 @@ namespace CitasPlatform.Controllers
         {
             _context = context;
         }
+
+
         // GET: Admin
         public async Task<IActionResult> Index()
         {
@@ -39,7 +41,7 @@ namespace CitasPlatform.Controllers
                                    Descripcion = b.Descripcion,
                                    Hora_Inicio = b.Hora_Inicio,
                                    Hora_Final = b.Hora_Final,
-                                   H_Final = b.Hora_Final.ToString().Replace('.',':'),
+                                   H_Final = b.Hora_Final.ToString().Replace('.', ':'),
                                    H_Inicio = b.Hora_Inicio.ToString().Replace('.', ':')
                                }).ToListAsync();
 
@@ -57,7 +59,9 @@ namespace CitasPlatform.Controllers
             return usuariosVp;
         }
 
-
-
+        public ActionResult Historial()
+        {
+            return View();
+        }
     }
 }

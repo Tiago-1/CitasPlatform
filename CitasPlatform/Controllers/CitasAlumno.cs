@@ -21,30 +21,27 @@ namespace CitasPlatform.Controllers
         {
             return View();
         }
-
-        public Boolean createCita()
+        public ActionResult Cita()
         {
-            return true;
+            return View();
+        }
+        public ActionResult Contact()
+        {
+            return View();
+        }
+        public ActionResult createCita()
+        {
+            return View();
         }
 
         // post -> CitasAlumno/createCita
         [HttpPost]
-        public async Task<int> createCita(Cita model)
+        public async Task<ActionResult> createCita(Cita model)
         {
-            Console.WriteLine(model.citaDateTime);
-
-
             var dateAndTime = model.citaDateTime;
             var date = dateAndTime.ToString("yyyy-MM-dd");
             string response = dateAndTime.ToString("HH,mm");
-
-            Console.WriteLine(response);
-
             decimal horainicio = Convert.ToDecimal(response);
-
-            Console.WriteLine("--Test");
-            Console.WriteLine(horainicio);
-            Console.WriteLine(horainicio + 1);
 
             Cita cita = new Cita();
 
@@ -55,16 +52,11 @@ namespace CitasPlatform.Controllers
             cita.Estatus = "Pendiente";
             cita.Descripcion = model.Descripcion;
 
-
-
             _context.Add(cita);
             await _context.SaveChangesAsync();
 
-            return 1;
+            return View(); 
         }
-
-
-
 
 
         // POST: CitasAlumno/Edit/5

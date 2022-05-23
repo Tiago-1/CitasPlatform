@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -27,5 +28,7 @@ namespace CitasPlatform.Models
         public string H_Inicio { get; set; }
         [NotMapped]
         public string H_Final { get; set; }
+        [NotMapped]
+        public List<Usuario> usuarios {get;set;}
     }
 }
