@@ -78,7 +78,6 @@ namespace CitasPlatform.Controllers
         }
         public ActionResult createCita()
         {
-            Console.WriteLine("Me pasaron esto: ");
             return View();
         }
 

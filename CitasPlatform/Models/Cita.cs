@@ -32,6 +32,6 @@ namespace CitasPlatform.Models
         [NotMapped]
         public string H_Final { get; set; }
         [NotMapped]
-        public List<int>? usuarios {get;set;}
+        public string NombreUsuario {get;set;}
     }
 }

@@ -2,6 +2,10 @@
     ViewData["Title"] = "Citas Alumno";
 }
 @model Cita
+
+@{   
+    var data = ViewBag.Message;  
+}  
 <style>
     .card-success{
         display:flex;
@@ -32,13 +36,13 @@
 
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/CitasAlumno">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="/CitasAlumno/Index/@data.UsuarioId">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/CitasAlumno/Cita">Crear Cita</a>
+                        <a class="nav-link active" href="/CitasAlumno/Cita/@data.UsuarioId">Crear Cita</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">Contacto</a>
+                        <a class="nav-link active" href="/CitasAlumno/Contacto/@data.UsuarioId">Contacto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/">Cerrar Sesion</a>
@@ -57,7 +61,7 @@
 
             <p>Sera un placer atenderte!!!</p>
 
-            <a class="btn btn-success" href="/CitasAlumno">Regresar</a>
+            <a class="btn btn-success" href="/CitasAlumno/Index/@data.UsuarioId">Regresar</a>
         </div>
         </div>
     </div>

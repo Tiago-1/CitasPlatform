@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CitasPlatform.Data;
 using CitasPlatform.Models;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace CitasPlatform.Controllers
 {
@@ -28,25 +29,46 @@ namespace CitasPlatform.Controllers
             var dateAndTime = DateTime.Now;
             var date = dateAndTime.Date;
 
-            // Consulta 
-            List<Cita> cita = await _context.Cita
-                               .Where(b => b.Fecha == date)
-                               .OrderBy(o => o.Hora_Inicio)
-                               .Select(b => new Cita
-                               {
-                                   Fecha = b.Fecha,
-                                   UsuarioId = b.UsuarioId,
-                                   CitaId = b.CitaId,
-                                   Estatus = b.Estatus,
-                                   Tipo = b.Tipo,
-                                   Descripcion = b.Descripcion,
-                                   Hora_Inicio = b.Hora_Inicio,
-                                   Hora_Final = b.Hora_Final,
-                                   H_Final = b.Hora_Final.ToString().Replace('.', ':'),
-                                   H_Inicio = b.Hora_Inicio.ToString().Replace('.', ':')
-                               }).ToListAsync();
+            List<Cita> citas = new List<Cita>();
 
-            return View(cita);
+            var citax = (from citaCtx in _context.Cita
+                              join usuarioCtx in _context.Usuario on citaCtx.UsuarioId equals usuarioCtx.UsuarioId
+                            where citaCtx.Fecha == date && citaCtx.Estatus == "Pendiente"
+                            orderby citaCtx.Hora_Inicio
+                            select new Cita
+                            {
+                                Fecha = citaCtx.Fecha,
+                                UsuarioId = citaCtx.UsuarioId,
+                                CitaId = citaCtx.CitaId,
+                                Estatus = citaCtx.Estatus,
+                                Tipo = citaCtx.Tipo,
+                                Descripcion = citaCtx.Descripcion,
+                                Hora_Inicio = citaCtx.Hora_Inicio,
+                                Hora_Final = citaCtx.Hora_Final,
+                                H_Final = citaCtx.Hora_Final.ToString().Replace('.', ':'),
+                                H_Inicio = citaCtx.Hora_Inicio.ToString().Replace('.', ':'),
+                                NombreUsuario = usuarioCtx.Nombre +" " +usuarioCtx.Apellidos
+                            });
+
+             await citax.ForEachAsync(cita =>
+            {
+
+                citas.Add(new Cita() {
+                    Fecha = cita.Fecha,
+                    UsuarioId = cita.UsuarioId,
+                    CitaId = cita.CitaId,
+                    Estatus = cita.Estatus,
+                    Tipo = cita.Tipo,
+                    Descripcion = cita.Descripcion,
+                    Hora_Inicio = cita.Hora_Inicio,
+                    Hora_Final = cita.Hora_Final,
+                    H_Final = cita.H_Final,
+                    H_Inicio = cita.H_Inicio,
+                    NombreUsuario = cita.NombreUsuario
+                });
+            });
+
+            return View(citas);
         }
 
         public async Task<string> GetUsersList(int citaId)
@@ -63,6 +85,101 @@ namespace CitasPlatform.Controllers
         public ActionResult Historial()
         {
             return View();
+        }
+
+      
+        public async Task<IActionResult> EditStateAtendido(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            return await stateModify((int)id, "Atendido");
+        }
+        public async Task<IActionResult> EditStateCancelado(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            return await stateModify((int)id, "Cancelado");
+        }
+
+        public async Task<IActionResult> stateModify(int id ,string estado)
+        {
+            var redirect = RedirectToAction();
+
+            var cita = await _context.Cita.FindAsync(id);
+
+            if (cita == null)
+            {
+                return NotFound();
+            }
+            Cita updateCita = cita;
+            updateCita.Estatus = estado;
+
+            _context.Entry(updateCita).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch
+            {
+                Console.WriteLine("error");
+            }
+            redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
+            redirect.ControllerName = "Admin"; // or can use nameof("") like  nameof(YourCtrl);
+            return redirect;
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var cita = (from citaCtx in _context.Cita
+                         join usuarioCtx in _context.Usuario on citaCtx.UsuarioId equals usuarioCtx.UsuarioId
+                         where citaCtx.CitaId == id
+                         select new Cita
+                         {
+                             Fecha = citaCtx.Fecha,
+                             UsuarioId = citaCtx.UsuarioId,
+                             CitaId = citaCtx.CitaId,
+                             Estatus = citaCtx.Estatus,
+                             Tipo = citaCtx.Tipo,
+                             Descripcion = citaCtx.Descripcion,
+                             Hora_Inicio = citaCtx.Hora_Inicio,
+                             Hora_Final = citaCtx.Hora_Final,
+                             H_Final = citaCtx.Hora_Final.ToString().Replace('.', ':'),
+                             H_Inicio = citaCtx.Hora_Inicio.ToString().Replace('.', ':'),
+                             NombreUsuario = usuarioCtx.Nombre + " " + usuarioCtx.Apellidos
+                         });
+
+            if (cita == null)
+            {
+                return NotFound();
+            }
+            Cita citaDetails = new Cita();
+            await cita.ForEachAsync(cita =>
+            {
+
+                citaDetails.Fecha = cita.Fecha;
+                citaDetails.UsuarioId = cita.UsuarioId;
+                citaDetails.CitaId = cita.CitaId;
+                citaDetails.Estatus = cita.Estatus;
+                citaDetails.Tipo = cita.Tipo;
+                citaDetails.Descripcion = cita.Descripcion;
+                citaDetails.H_Final = cita.H_Final;
+                citaDetails.H_Inicio = cita.H_Inicio;
+                citaDetails.NombreUsuario = cita.NombreUsuario;
+                
+            });
+
+            return View(citaDetails);
         }
     }
 }

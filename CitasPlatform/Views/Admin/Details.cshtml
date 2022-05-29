@@ -1,0 +1,183 @@
+﻿@model CitasPlatform.Models.Cita
+
+<style>
+    ul,li{
+        list-style-type: none;
+         padding: 0; /* Remove padding */
+         margin: 0; /* Remove margins */
+    }
+    button{
+        margin:3px;
+    }
+   
+    .intinerario-card{
+        display:flex;
+        flex-direction: row;
+    }
+    #intinerario-hours{
+        padding:10px;
+        width:15%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    #intinerario-info{
+        padding:10px;
+        width:85%;
+        display:flex;
+        flex-direction:row;
+    }
+
+     #intinerario-info_data{
+        width:60%;
+        display:flex;
+     }
+     #intinerario-info_actions{
+        width:40%;
+        display:flex;
+        flex-direction: row;
+        justify-content: right;
+     }
+
+     .contenedor{
+         display:flex;
+         flex-direction:row;
+     }
+
+     .intinerario-header{
+         padding:10px;
+     }
+
+     .intinerio-display{
+         width:50%;
+         padding:10px;
+     }
+    
+     .image-psic{
+         width:50%;
+         display:flex;
+         justify-content:center;
+         align-items:center;
+     }
+
+</style>
+
+
+
+
+  <nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" 
+    aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
+    <a class="navbar-brand font-weight-bold" href="#">Plataforma Citas Online</a>
+    <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+     
+    </div>
+    <div class="form-inline my-2 my-lg-0">
+      
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="/Admin">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/Admin/Historial">Historial</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link active" href="/">Cerrar Sesion</a>
+      </li>
+    </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="pl-5" >
+    <div class ="mt-2 mb-3">
+        
+            <a  href="/Admin" >  
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle m-1" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+                Regresar
+                </a>
+        </div>
+
+<h4 class="mb-4">Cita # @Model.CitaId </h4>
+    
+    <div class= "card p-4 bg-light" style="width:50%">
+        <dl class="row">
+        
+        <dt class = "col-sm-4 mt-3">
+           Alumno
+        </dt>
+        <dd class = "col-sm-8 mt-3">
+            @Html.DisplayFor(model => model.NombreUsuario)
+        </dd>
+
+         <dt class = "col-sm-4 mt-3">
+            Tipo de Cita
+        </dt>
+        <dd class = "col-sm-8 mt-3">
+            @Html.DisplayFor(model => model.Tipo)
+        </dd>
+
+         <dt class = "col-sm-4 mt-3">
+            @Html.DisplayNameFor(model => model.Estatus)
+        </dt>
+        <dd class = "col-sm-8 mt-3">
+            @Html.DisplayFor(model => model.Estatus)
+        </dd>
+
+         <dt class = "col-sm-4 mt-3">
+           Fecha de Cita
+        </dt>
+        <dd class = "col-sm-8 mt-3">
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+
+         <dt class = "col-sm-4 mt-3">
+           Hora de Inicio
+        </dt>
+        <dd class = "col-sm-8 mt-3">
+            @Html.DisplayFor(model => model.H_Inicio )
+        </dd>
+
+        <dt class = "col-sm-4 mt-3">
+           Hora de Finalizacion
+        </dt>
+        <dd class = "col-sm-8 mt-3">
+            @Html.DisplayFor(model =>  model.H_Final )
+        </dd>
+
+        </dl>
+        <div>
+            <div  style="float:right">
+                
+             @using (Html.BeginForm("EditStateAtendido", "Admin", new { Id = Model.CitaId }, FormMethod.Get))
+                            {
+                                 <button class="btn btn-outline-success"  > 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle mb-1" viewBox="0 0 16 16">
+                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                </svg>
+                
+                                Atendido</button>
+                            }
+            @using (Html.BeginForm("EditStateCancelado", "Admin", new { Id = Model.CitaId }, FormMethod.Get))
+                            {
+            <button class="btn btn-outline-danger"  > 
+                
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle mb-1" viewBox="0 0 16 16">
+                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                </svg>
+                
+                Cancelar</button>
+                }
+                </div>
+        </div>
+    </div>
+    
+</div>

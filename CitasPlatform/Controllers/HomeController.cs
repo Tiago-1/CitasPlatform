@@ -32,7 +32,6 @@ namespace CitasPlatform.Controllers
             // Has la verificacion de cuenta
             // Si hay usuario -> manda la vista
             // Si no hay usuario -> regresa un mensaje
-            Console.WriteLine("Intentemos esto");
             return "Esto esta padre";
         }
 
