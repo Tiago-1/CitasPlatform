@@ -14,16 +14,27 @@ alter table cita Drop Column UsuarioId;
 
 EXEC sp_help cita;
 
-
 create table cita_usuario (
 	citaUsuarioId int IDENTITY(1,1) Primary key,
 	UsuarioId int  FOREIGN KEY REFERENCES Usuario(UsuarioId),
 	CitaId int FOREIGN KEY REFERENCES Cita(CitaId)
 )
 
-
+delete from cita
+where CitaId = 3;
 
 insert into cita_usuario (UsuarioId,CitaId)
 values (3,1);
 
+update usuario
+set Pass = 'password'
+where UsuarioId = 1003;
 
+
+-- Modificaciones SQL
+
+alter table cita add UsuarioId int FOREIGN KEY REFERENCES usuario(UsuarioId);
+
+-- agregarle un usuario valido de tu bd
+update cita
+set UsuarioId = (select top 1 UsuarioId from usuario where Rol = 1);

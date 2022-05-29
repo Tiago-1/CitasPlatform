@@ -1,8 +1,10 @@
-﻿@{
+﻿@model IEnumerable<CitasPlatform.Models.Cita>
+@{
     ViewData["Title"] = "Citas Alumno";
 }
-@model Cita
-
+ @{   
+    var data = ViewBag.Message;  
+}  
 <style>
     ul,li{
         list-style-type: none;
@@ -81,7 +83,7 @@
                         <a class="nav-link" href="/CitasAlumno">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/CitasAlumno/Cita">Crear Cita</a>
+                        <a class="nav-link active" href="/CitasAlumno/Cita/@data.UsuarioId">Crear Cita</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" href="/CitasAlumno/Contact">Contacto</a>
@@ -98,7 +100,7 @@
     <div class="row" style="height:80%">
         <div class="col-6" padding:60px;">
             <figure class="imagen">
-                <img src="https://cdn.pixabay.com/photo/2020/08/11/14/34/greeting-5480092_960_720.png" style="width:60%;margin-top:50px">
+                <img src="https://i.pinimg.com/originals/dd/5a/31/dd5a31c736d9944eccd18bc9372274ab.png" style="width:60%;margin-top:50px">
             </figure>
         </div>
         <div class="col-6" align="center">
@@ -112,20 +114,21 @@
            <div class="intinerario-body ">
                <ul>
 
-                      
+                @foreach (var item in Model) 
+                {
                    <li class="card m-2">
                        <div class="intinerario-card">
                            <div id="intinerario-hours" class="bg-warning font-weight-bold">
                                <ul>
-                                   <li>8:00</li>
-                                   <li>9:00</li>
+                                   <li>@Html.DisplayFor(modelItem => item.H_Inicio )</li>
+                                   <li>@Html.DisplayFor(modelItem => item.H_Final)</li>
                                </ul>
                            </div>
                            <div id= "intinerario-info" class="bg-light">
                                     <div id= "intinerario-info_data" >
                                          <ul >
-                                           <li>24 Mayo 2022</li>
-                                           <li>Salon Biblioteca </li>
+                                           <li>@Html.DisplayFor(modelItem => item.Fecha)</li>
+                                           <li>Estatus: <b> @Html.DisplayFor(modelItem => item.Estatus)</b></li>
                                          </ul>
                                     </div>
                                   
@@ -137,7 +140,8 @@
                                
                        </div>
                    </li>
-                   
+                   }
+
                </ul>
            </div>
         </div>

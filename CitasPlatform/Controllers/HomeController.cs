@@ -1,25 +1,22 @@
 ﻿using CitasPlatform.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CitasPlatform.Controllers.Error;
+using Microsoft.AspNetCore.Routing;
 
 namespace CitasPlatform.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly Data.CitasPlatformContext _context;
 
        
-        public HomeController(ILogger<HomeController> logger, Data.CitasPlatformContext context)
+        public HomeController(Data.CitasPlatformContext context)
         {
-            _logger = logger;
             _context = context;
         }
 
@@ -43,7 +40,7 @@ namespace CitasPlatform.Controllers
         {
             return View();
         }
-
+        // Login principal function
         [HttpPost]
         public async Task<IActionResult> Index(LoginModel model)
         {
@@ -54,10 +51,11 @@ namespace CitasPlatform.Controllers
             {
                 var user = from m in _context.Usuario select m;
                 user = user.Where(s => s.Correo == model.user && s.Pass == model.password);
+
+                Console.WriteLine(user.First().UsuarioId);
                 
                 if(user.ToList().Count == 0)
                 {
-                    Console.WriteLine("se suppone que mandara la exceptcion");
                     throw new AppException("Email or password is incorrect");
                 }
 
@@ -66,7 +64,9 @@ namespace CitasPlatform.Controllers
                 {
                     redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
                     redirect.ControllerName = "CitasAlumno"; // or can use nameof("") like  nameof(YourCtrl);
-                    return redirect;
+                                                             // return redirect;
+                    return RedirectToAction("", new RouteValueDictionary(
+                    new { controller = "CitasAlumno", action = "", Id = user.First().UsuarioId }));
                 }
                 else
                 {
@@ -74,10 +74,6 @@ namespace CitasPlatform.Controllers
                     redirect.ControllerName = "Admin"; // or can use nameof("") like  nameof(YourCtrl);
                     return redirect;
                 }
-               
-                //else if (existeusuario && contrase;a es correcta y esPsicologa)
-                // else 
-                //return view
 
             }
             catch

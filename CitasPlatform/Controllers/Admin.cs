@@ -35,6 +35,7 @@ namespace CitasPlatform.Controllers
                                .Select(b => new Cita
                                {
                                    Fecha = b.Fecha,
+                                   UsuarioId = b.UsuarioId,
                                    CitaId = b.CitaId,
                                    Estatus = b.Estatus,
                                    Tipo = b.Tipo,

@@ -1,28 +1,75 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using CitasPlatform.Data;
+using System.Linq;
 using CitasPlatform.Models;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace CitasPlatform.Controllers
 {
     public class CitasAlumno : Controller
     {
-        private readonly CitasPlatformContext _context;
+        private readonly Data.CitasPlatformContext _context;
 
-        public CitasAlumno(CitasPlatformContext context)
+        public CitasAlumno(Data.CitasPlatformContext context)
         {
             _context = context;
         }
 
+        public int generalUsuarioId;
+
         // GET: CitasAlumno
-        public ActionResult Index()
+
+        public async Task<IActionResult> Index(int? id)
         {
+            var dateAndTime = DateTime.Now;
+            var date = dateAndTime.Date;
+
+            try
+            {
+                List<Cita> citas = await _context.Cita
+                               .Where(b => b.UsuarioId == id && b.Fecha >= date)
+                               .OrderBy(o => o.Fecha)
+                               .Select(b => new Cita
+                               {
+                                   Fecha = b.Fecha,
+                                   CitaId = b.CitaId,
+                                   Estatus = b.Estatus,
+                                   Tipo = b.Tipo,
+                                   Descripcion = b.Descripcion,
+                                   Hora_Inicio = b.Hora_Inicio,
+                                   Hora_Final = b.Hora_Final,
+                                   H_Final = b.Hora_Final.ToString().Replace('.', ':'),
+                                   H_Inicio = b.Hora_Inicio.ToString().Replace('.', ':')
+                               }).ToListAsync();
+               
+                Usuario user = new Usuario();
+                user.UsuarioId = (int)id;
+
+                ViewBag.Message = user;
+
+                return View(citas);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
             return View();
         }
-        public ActionResult Cita()
+        public ActionResult Cita(int? id)
         {
+
+            if(id == null)
+            {
+                return View();
+            }
+            Usuario user = new Usuario();
+            user.UsuarioId = (int)id;
+
+            ViewBag.Message = user;
             return View();
         }
         public ActionResult Contact()
@@ -31,6 +78,7 @@ namespace CitasPlatform.Controllers
         }
         public ActionResult createCita()
         {
+            Console.WriteLine("Me pasaron esto: ");
             return View();
         }
 
@@ -38,6 +86,7 @@ namespace CitasPlatform.Controllers
         [HttpPost]
         public async Task<ActionResult> createCita(Cita model)
         {
+            Console.WriteLine(model.ToString());
             var dateAndTime = model.citaDateTime;
             var date = dateAndTime.ToString("yyyy-MM-dd");
             string response = dateAndTime.ToString("HH,mm");
@@ -51,11 +100,17 @@ namespace CitasPlatform.Controllers
             cita.Tipo = model.Tipo;
             cita.Estatus = "Pendiente";
             cita.Descripcion = model.Descripcion;
+            cita.UsuarioId = model.UsuarioId;
 
             _context.Add(cita);
             await _context.SaveChangesAsync();
 
-            return View(); 
+
+            Usuario user = new Usuario();
+            user.UsuarioId = (int) model.UsuarioId;
+
+            ViewBag.Message = user;
+            return View();
         }
 
 

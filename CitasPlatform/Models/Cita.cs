@@ -10,6 +10,9 @@ namespace CitasPlatform.Models
     {
         public int CitaId { get; set; }
 
+        [ForeignKey("Usuario")]
+        public int UsuarioId { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
         public decimal Hora_Inicio { get; set; }
@@ -29,6 +32,6 @@ namespace CitasPlatform.Models
         [NotMapped]
         public string H_Final { get; set; }
         [NotMapped]
-        public List<Usuario> usuarios {get;set;}
+        public List<int>? usuarios {get;set;}
     }
 }
