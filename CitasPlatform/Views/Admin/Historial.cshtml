@@ -1,33 +1,173 @@
 ﻿@model IEnumerable<CitasPlatform.Models.Cita>
 
-@{
-    ViewData["Title"] = "Citas Psicologa";
-}
+@{ ViewData["Title"] = "Citas Psicologa"; }
 
+@{   
+    var data = ViewBag.Message;  
+} 
 
- <nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" 
-    aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
-    <a class="navbar-brand font-weight-bold" href="#">Plataforma Citas Online</a>
-    <div class="navbar-nav mr-auto mt-2 mt-lg-0">
-     
+<style>
+        ul,li{
+        list-style-type: none;
+         padding: 0; /* Remove padding */
+         margin: 0; /* Remove margins */
+    }
+    button{
+        margin:3px;
+    }
+   
+    .intinerario-card{
+        display:flex;
+        flex-direction: row;
+    }
+    #intinerario-hours{
+        padding:10px;
+        width:15%;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+    #intinerario-info{
+        padding:10px;
+        width:85%;
+        display:flex;
+        flex-direction:row;
+    }
+
+     #intinerario-info_data{
+        width:60%;
+        display:flex;
+     }
+     #intinerario-info_actions{
+        width:40%;
+        display:flex;
+        flex-direction: row;
+        justify-content: right;
+     }
+
+     .contenedor{
+         display:flex;
+         flex-direction:row;
+     }
+
+     .intinerario-header{
+         padding:10px;
+     }
+
+     .intinerio-display{
+         width:50%;
+         padding:10px;
+     }
+    
+    .history-panel {
+        width: 100%;
+        height:92vh;
+        display: flex;
+        justify-content: center;
+        padding:30px;
+    }
+    .card-scroll{
+        overflow-y: auto;
+    }
+</style>
+
+<nav class="navbar navbar-dark navbar-expand-lg " style="background-color:#0E7A89">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+            aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse " id="navbarTogglerDemo01">
+        <a class="navbar-brand font-weight-bold" href="#">Plataforma Citas Online</a>
+        <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+        </div>
+        <div class="form-inline my-2 my-lg-0">
+
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/Admin">Inicio <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="">Historial</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link text-warning" href="/">Cerrar Sesion</a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="form-inline my-2 my-lg-0">
-      
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li class="nav-item active">
-        <a class="nav-link" href="/Admin">Inicio <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="">Historial</a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link active" href="/">Cerrar Sesion</a>
-      </li>
-    </ul>
-    </div>
-  </div>
 </nav>
+
+<div class="history-panel bg-light">
+    
+
+    <div class="card" style="width:85%">
+
+        <div class="card-header">
+            <center>
+            <h3>Historial de Citas</h3>
+            </center>
+            <form action="Search" method="get">
+               
+                <div class="input-group mb-3">
+                  
+                  <input type="text" class="form-control" name="searchNombre" placeholder="Busqueda por nombre de alumno" aria-label="Recipient's username" aria-describedby="basic-addon2" value=@data.searchNombre />
+                  <input type="date" class="form-control" name="searchFecha"   value=@data.Fecha/>
+                  <div class="input-group-append">
+                    <button class="btn btn-info" type="submit">Buscar</button>
+                  </div>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="card-body card-scroll">
+           
+
+               <ul>
+
+                        @foreach (var item in Model) 
+                {
+                   <li class="card m-2">
+                       <div class="intinerario-card">
+                           <div id="intinerario-hours" class="bg-dark text-light">
+                               <ul>
+                                   <li class="font-weight-bold">
+                                        @Html.DisplayFor(modelItem => item.Fecha )
+                                   </li>
+                                  <li>
+                                       @Html.DisplayFor(modelItem => item.H_Inicio ) a
+                                       @Html.DisplayFor(modelItem => item.H_Final)
+                                  </li>
+                              </ul>
+                           </div>
+                           <div id= "intinerario-info" class="bg-light">
+                                    <div id= "intinerario-info_data" >
+                                         <ul >
+                                           <li>@Html.DisplayFor(modelItem => item.NombreUsuario)</li>
+                                           <li>
+                                               Razon: @item.Tipo >> 
+                                               Estatus: @item.Estatus
+                                           </li>
+                                         </ul>
+                                    </div>
+                                  
+                                    <div id= "intinerario-info_actions" >
+                                         <a  class="btn btn-info" href="/Admin/Details/@item.CitaId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eyeglasses" viewBox="0 0 16 16">
+                                              <path d="M4 6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm2.625.547a3 3 0 0 0-5.584.953H.5a.5.5 0 0 0 0 1h.541A3 3 0 0 0 7 8a1 1 0 0 1 2 0 3 3 0 0 0 5.959.5h.541a.5.5 0 0 0 0-1h-.541a3 3 0 0 0-5.584-.953A1.993 1.993 0 0 0 8 6c-.532 0-1.016.208-1.375.547zM14 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
+                                            </svg>
+                                             Detalles</a>                       
+                                    </div>
+                            </div>
+                               
+                       </div>
+                   </li>
+                   }
+               </ul>
+
+
+        </div>
+    </div>
+
+</div>

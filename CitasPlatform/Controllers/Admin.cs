@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using CitasPlatform.Data;
 using CitasPlatform.Models;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.AspNetCore.Routing;
 
 namespace CitasPlatform.Controllers
 {
@@ -82,9 +83,103 @@ namespace CitasPlatform.Controllers
             return usuariosVp;
         }
 
-        public ActionResult Historial()
+        public async Task<IActionResult> Historial(string name,string date)
         {
-            return View();
+            
+            List<Cita> citas = new List<Cita>();
+
+            IQueryable<Cita> citax;
+
+            if (name == null)
+            {
+                name = "";
+            }
+
+            if(date != null)
+            {
+                 DateTime searchDate = DateTime.Parse(date);
+                 citax = (from citaCtx in _context.Cita
+                         join usuarioCtx in _context.Usuario on citaCtx.UsuarioId equals usuarioCtx.UsuarioId
+                         where usuarioCtx.Nombre.Contains(name) || usuarioCtx.Apellidos.Contains(name)
+                         where citaCtx.Fecha == searchDate
+                         orderby citaCtx.Fecha
+                         select new Cita
+                             {
+                                 Fecha = citaCtx.Fecha,
+                                 UsuarioId = citaCtx.UsuarioId,
+                                 CitaId = citaCtx.CitaId,
+                                 Estatus = citaCtx.Estatus,
+                                 Tipo = citaCtx.Tipo,
+                                 Descripcion = citaCtx.Descripcion,
+                                 Hora_Inicio = citaCtx.Hora_Inicio,
+                                 Hora_Final = citaCtx.Hora_Final,
+                                 H_Final = citaCtx.Hora_Final.ToString().Replace('.', ':'),
+                                 H_Inicio = citaCtx.Hora_Inicio.ToString().Replace('.', ':'),
+                                 NombreUsuario = usuarioCtx.Nombre + " " + usuarioCtx.Apellidos
+                             });
+
+            }
+            else
+            {
+              citax = (from citaCtx in _context.Cita
+                         join usuarioCtx in _context.Usuario on citaCtx.UsuarioId equals usuarioCtx.UsuarioId
+                         where usuarioCtx.Nombre.Contains(name) || usuarioCtx.Apellidos.Contains(name)
+                         orderby citaCtx.Fecha
+                         select new Cita
+                         {
+                             Fecha = citaCtx.Fecha,
+                             UsuarioId = citaCtx.UsuarioId,
+                             CitaId = citaCtx.CitaId,
+                             Estatus = citaCtx.Estatus,
+                             Tipo = citaCtx.Tipo,
+                             Descripcion = citaCtx.Descripcion,
+                             Hora_Inicio = citaCtx.Hora_Inicio,
+                             Hora_Final = citaCtx.Hora_Final,
+                             H_Final = citaCtx.Hora_Final.ToString().Replace('.', ':'),
+                             H_Inicio = citaCtx.Hora_Inicio.ToString().Replace('.', ':'),
+                             NombreUsuario = usuarioCtx.Nombre + " " + usuarioCtx.Apellidos
+                         });
+            }
+
+            await citax.ForEachAsync(cita =>
+            {
+
+                citas.Add(new Cita()
+                {
+                    Fecha = cita.Fecha,
+                    UsuarioId = cita.UsuarioId,
+                    CitaId = cita.CitaId,
+                    Estatus = cita.Estatus,
+                    Tipo = cita.Tipo,
+                    Descripcion = cita.Descripcion,
+                    Hora_Inicio = cita.Hora_Inicio,
+                    Hora_Final = cita.Hora_Final,
+                    H_Final = cita.H_Final,
+                    H_Inicio = cita.H_Inicio,
+                    NombreUsuario = cita.NombreUsuario
+                });
+            });
+
+
+            SearchModel searchInfo = new SearchModel();
+
+            if(name != null && name != "")
+            {
+                searchInfo.searchNombre = name;
+            }else 
+            {
+                searchInfo.searchNombre = null;
+            }
+
+            if(date != null)
+            {
+                searchInfo.Fecha = DateTime.Parse(date);
+                searchInfo.searchFecha = date;
+            }
+
+
+            ViewBag.Message = searchInfo;
+            return View(citas);
         }
 
       
@@ -181,5 +276,26 @@ namespace CitasPlatform.Controllers
 
             return View(citaDetails);
         }
+
+        public IActionResult Search(SearchModel model)
+        {
+            string nameSearch = "";
+
+            if (model.searchNombre != null)
+            {
+                nameSearch = model.searchNombre;
+            }
+            
+            if(model.searchFecha != null)
+            {
+                string dateSearch = model.searchFecha.ToString();
+                return RedirectToAction("Historial", new RouteValueDictionary(
+                    new { controller = "Admin", action = "get", name = nameSearch, date = dateSearch }));
+            }
+
+            return RedirectToAction("Historial", new RouteValueDictionary(
+                    new { controller = "Admin", action = "get", name=nameSearch }));
+        }
+
     }
 }

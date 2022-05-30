@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Crear Cuenta Portal";
+}
+
+<div class="row" style="height:100%">
+    <div class="col-7" align="center">
+        <figure class="imagen">
+            <img src="https://cdni.iconscout.com/illustration/premium/thumb/sign-up-page-1886582-1598253.png" style="width:75%;margin-top:50px">
+        </figure>
+    </div>
+    <div class="col-5 " style=" padding:40px;">
+        <h2 >Crear Cuenta!</h2>
+        <form class="container" method="post" action="CrearCuenta">
+
+
+            <div class="form-group">
+                <label for="InputNombre">Nombre(s) </label>
+                <input type="text" name = "nombre" class="form-control" id="nombre" aria-describedby="nombreHelp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="InputNombre">Apellidos </label>
+                <input type="text" name = "apellidos" class="form-control" id="apellidos" aria-describedby="apellidosHelp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MatriculaEmail1">Matricula </label>
+                <input type="text" name = "matricula" class="form-control" id="matricula" aria-describedby="matriculaHelp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="MatriculaEmail1">Telefono </label>
+                <input type="text" name = "telefono" class="form-control" id="matricula" aria-describedby="matriculaHelp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="InputEmail1">Email </label>
+                <input type="email" name = "correo" class="form-control" id="email" aria-describedby="emailHelp" required>
+            </div>
+
+            <div class="form-group">
+                <label for="InputPassword1">Contraseña</label>
+                <input type="password" name= "password" class="form-control" id="password"  required>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputPassword2">Confirmar Contraseña</label>
+                <input type="password" name= "passwordConfirm" class="form-control" id="passwordConfirm" required>
+            </div>
+
+             <center>
+                <button type="submit" class="btn btn-info text-light">Crear Cuenta</button>
+             </center>
+        </form>
+        <p>
+            <center>
+                <a href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle m-1" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                </svg>
+
+                Regresar</a>
+            </center>
+        </p>
+    </div>
+</div>

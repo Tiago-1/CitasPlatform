@@ -85,7 +85,6 @@ namespace CitasPlatform.Controllers
         [HttpPost]
         public async Task<ActionResult> createCita(Cita model)
         {
-            Console.WriteLine(model.ToString());
             var dateAndTime = model.citaDateTime;
             var date = dateAndTime.ToString("yyyy-MM-dd");
             string response = dateAndTime.ToString("HH,mm");

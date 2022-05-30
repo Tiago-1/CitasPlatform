@@ -24,21 +24,47 @@ namespace CitasPlatform.Controllers
         {
             return View();
         }
-        // Home/Login
-        public string Login()
+
+        public IActionResult CrearCuenta()
         {
-            // Procesa los parametros que te dieron
-            // Consulta la BD
-            // Has la verificacion de cuenta
-            // Si hay usuario -> manda la vista
-            // Si no hay usuario -> regresa un mensaje
-            return "Esto esta padre";
+            return View();
         }
 
         public IActionResult Privacy()
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearCuenta(RegistroModel model)
+        {
+            var redirect = RedirectToAction();
+
+            Usuario usuario = new Usuario();
+
+            usuario.Nombre = model.nombre;
+            usuario.Apellidos = model.apellidos;
+            usuario.Telefono = model.telefono;
+            usuario.Correo = model.correo;
+            usuario.Pass = model.password;
+            usuario.Rol = 1;
+            usuario.Matricula = model.matricula;
+
+            try
+            {
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+                redirect.ActionName = "";
+                redirect.ControllerName = "Home";
+                return redirect;
+            }
+            catch
+            {
+                return View();
+            }
+          
+        }
+
         // Login principal function
         [HttpPost]
         public async Task<IActionResult> Index(LoginModel model)
@@ -49,9 +75,8 @@ namespace CitasPlatform.Controllers
             try
             {
                 var user = from m in _context.Usuario select m;
-                user = user.Where(s => s.Correo == model.user && s.Pass == model.password);
+                user =  user.Where(s => s.Correo == model.user && s.Pass == model.password);
 
-                Console.WriteLine(user.First().UsuarioId);
                 
                 if(user.ToList().Count == 0)
                 {
@@ -61,9 +86,6 @@ namespace CitasPlatform.Controllers
                 // if (existeusuario && contrase;a es correcta y esAlumno)
                 if(user.ToList().First().Rol == 1)
                 {
-                    redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
-                    redirect.ControllerName = "CitasAlumno"; // or can use nameof("") like  nameof(YourCtrl);
-                                                             // return redirect;
                     return RedirectToAction("", new RouteValueDictionary(
                     new { controller = "CitasAlumno", action = "", Id = user.First().UsuarioId }));
                 }
@@ -87,5 +109,6 @@ namespace CitasPlatform.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
     }
 }

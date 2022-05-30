@@ -21,7 +21,7 @@ create table cita_usuario (
 )
 
 delete from cita
-where CitaId = 3;
+where CitaId = 3014;
 
 insert into cita_usuario (UsuarioId,CitaId)
 values (3,1);
@@ -29,6 +29,12 @@ values (3,1);
 update usuario
 set Pass = 'password'
 where UsuarioId = 1003;
+
+
+update cita
+set Estatus = 'Pendiente'
+where CitaId in (3012,3002);
+
 
 
 -- Modificaciones SQL

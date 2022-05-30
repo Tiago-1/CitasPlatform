@@ -52,7 +52,7 @@ namespace CitasPlatform
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseRouting();
-
+           
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
