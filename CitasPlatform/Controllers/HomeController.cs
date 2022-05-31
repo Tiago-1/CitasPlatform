@@ -91,9 +91,9 @@ namespace CitasPlatform.Controllers
                 }
                 else
                 {
-                    redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
-                    redirect.ControllerName = "Admin"; // or can use nameof("") like  nameof(YourCtrl);
-                    return redirect;
+                    return RedirectToAction("", new RouteValueDictionary(
+                    new { controller = "Admin", action = "", Id = user.First().UsuarioId }));
+
                 }
 
             }

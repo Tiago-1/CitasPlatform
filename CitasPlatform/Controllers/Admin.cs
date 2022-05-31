@@ -25,8 +25,20 @@ namespace CitasPlatform.Controllers
 
 
         // GET: Admin
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
+            if(id == null)
+            {
+                return ReturnToLogin();
+            }
+
+            var usuario = await _context.Usuario
+                .FirstOrDefaultAsync(m => m.UsuarioId == id && m.Rol == 2);
+            if (usuario == null)
+            {
+                return ReturnToLogin();
+            }
+
             var dateAndTime = DateTime.Now;
             var date = dateAndTime.Date;
 
@@ -69,6 +81,14 @@ namespace CitasPlatform.Controllers
                 });
             });
 
+
+
+            Usuario user = new Usuario()
+            {
+                UsuarioId = (int)id
+            };
+            ViewBag.Message = user;
+
             return View(citas);
         }
 
@@ -83,7 +103,7 @@ namespace CitasPlatform.Controllers
             return usuariosVp;
         }
 
-        public async Task<IActionResult> Historial(string name,string date)
+        public async Task<IActionResult> Historial(int? id,string name,string date)
         {
             
             List<Cita> citas = new List<Cita>();
@@ -161,7 +181,10 @@ namespace CitasPlatform.Controllers
             });
 
 
-            SearchModel searchInfo = new SearchModel();
+            SearchModel searchInfo = new SearchModel()
+            {
+                usuarioId = (int) id
+            };
 
             if(name != null && name != "")
             {
@@ -182,29 +205,28 @@ namespace CitasPlatform.Controllers
             return View(citas);
         }
 
-      
-        public async Task<IActionResult> EditStateAtendido(int? id)
+
+            public async Task<IActionResult> EditStateAtendido(int? id,int user)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            return await stateModify((int)id, "Atendido");
+            return await stateModify((int)id, "Atendido",user);
         }
-        public async Task<IActionResult> EditStateCancelado(int? id)
+        public async Task<IActionResult> EditStateCancelado(int? id, int user)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            return await stateModify((int)id, "Cancelado");
+            return await stateModify((int)id, "Cancelado",user);
         }
 
-        public async Task<IActionResult> stateModify(int id ,string estado)
+        public async Task<IActionResult> stateModify(int id ,string estado,int user)
         {
-            var redirect = RedirectToAction();
 
             var cita = await _context.Cita.FindAsync(id);
 
@@ -224,21 +246,21 @@ namespace CitasPlatform.Controllers
             {
                 Console.WriteLine("error");
             }
-            redirect.ActionName = ""; // or can use nameof("") like  nameof(YourAction);
-            redirect.ControllerName = "Admin"; // or can use nameof("") like  nameof(YourCtrl);
-            return redirect;
+            Console.WriteLine("user: " + user);
+            return RedirectToAction("Index", new RouteValueDictionary(
+                    new { controller = "Admin", action = "get", Id = user }));
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id,int? cita)
         {
-            if (id == null)
+            if (cita == null)
             {
                 return NotFound();
             }
 
-            var cita = (from citaCtx in _context.Cita
+            var citax = (from citaCtx in _context.Cita
                          join usuarioCtx in _context.Usuario on citaCtx.UsuarioId equals usuarioCtx.UsuarioId
-                         where citaCtx.CitaId == id
+                         where citaCtx.CitaId == cita
                          select new Cita
                          {
                              Fecha = citaCtx.Fecha,
@@ -254,12 +276,12 @@ namespace CitasPlatform.Controllers
                              NombreUsuario = usuarioCtx.Nombre + " " + usuarioCtx.Apellidos
                          });
 
-            if (cita == null)
+            if (citax == null)
             {
                 return NotFound();
             }
             Cita citaDetails = new Cita();
-            await cita.ForEachAsync(cita =>
+            await citax.ForEachAsync(cita =>
             {
 
                 citaDetails.Fecha = cita.Fecha;
@@ -273,6 +295,13 @@ namespace CitasPlatform.Controllers
                 citaDetails.NombreUsuario = cita.NombreUsuario;
                 
             });
+
+            Usuario user = new Usuario()
+            {
+                UsuarioId = (int)id
+            };
+
+            ViewBag.Message = user;
 
             return View(citaDetails);
         }
@@ -295,6 +324,12 @@ namespace CitasPlatform.Controllers
 
             return RedirectToAction("Historial", new RouteValueDictionary(
                     new { controller = "Admin", action = "get", name=nameSearch }));
+        }
+
+        public ActionResult ReturnToLogin()
+        {
+            return RedirectToAction("", new RouteValueDictionary(
+                    new { controller = "Home", action = "get" }));
         }
 
     }

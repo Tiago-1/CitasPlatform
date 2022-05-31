@@ -30,10 +30,13 @@ update usuario
 set Pass = 'password'
 where UsuarioId = 1003;
 
+update usuario
+set Rol = 1
+where UsuarioId = 3;
 
 update cita
 set Estatus = 'Pendiente'
-where CitaId in (3012,3002);
+where CitaId in (5008,5009);
 
 
 

@@ -5,6 +5,7 @@ namespace CitasPlatform.Models
 {
     public class SearchModel
     {
+        public int usuarioId { get; set; }
         public string searchNombre { get; set; }
         public string searchEstado { get; set; }
         public string searchFecha { get; set; }

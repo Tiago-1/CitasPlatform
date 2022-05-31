@@ -6,6 +6,7 @@ using CitasPlatform.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Routing;
 
 namespace CitasPlatform.Controllers
 {
@@ -24,6 +25,12 @@ namespace CitasPlatform.Controllers
 
         public async Task<IActionResult> Index(int? id)
         {
+
+            if (id == null)
+            {
+               return ReturnToLogin();
+            }
+
             var dateAndTime = DateTime.Now;
             var date = dateAndTime.Date;
 
@@ -64,21 +71,31 @@ namespace CitasPlatform.Controllers
 
             if(id == null)
             {
-                return View();
+               return ReturnToLogin();
             }
+
             Usuario user = new Usuario();
             user.UsuarioId = (int)id;
 
             ViewBag.Message = user;
             return View();
         }
-        public ActionResult Contact()
+        public ActionResult Contact(int ?id)
         {
+            if (id == null)
+            {
+                return ReturnToLogin();
+            }
+
+            Usuario user = new Usuario();
+            user.UsuarioId = (int)id;
+
+            ViewBag.Message = user;
             return View();
         }
-        public ActionResult createCita()
+        public ActionResult createCita(int? id)
         {
-            return View();
+            return  id != null ? View() : ReturnToLogin();
         }
 
         // post -> CitasAlumno/createCita
@@ -147,5 +164,13 @@ namespace CitasPlatform.Controllers
                 return View();
             }
         }
+
+
+        public ActionResult ReturnToLogin()
+        {
+            return RedirectToAction("", new RouteValueDictionary(
+                    new { controller = "Home", action = "get" }));
+        }
+
     }
 }
