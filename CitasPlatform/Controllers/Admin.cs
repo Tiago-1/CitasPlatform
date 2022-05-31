@@ -319,11 +319,11 @@ namespace CitasPlatform.Controllers
             {
                 string dateSearch = model.searchFecha.ToString();
                 return RedirectToAction("Historial", new RouteValueDictionary(
-                    new { controller = "Admin", action = "get", name = nameSearch, date = dateSearch }));
+                    new { controller = "Admin", action = "get", id= model.usuarioId, name = nameSearch, date = dateSearch }));
             }
 
             return RedirectToAction("Historial", new RouteValueDictionary(
-                    new { controller = "Admin", action = "get", name=nameSearch }));
+                    new { controller = "Admin", action = "get", id = model.usuarioId, name = nameSearch }));
         }
 
         public ActionResult ReturnToLogin()

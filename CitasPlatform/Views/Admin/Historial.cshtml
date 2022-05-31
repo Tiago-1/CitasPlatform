@@ -107,12 +107,12 @@
             <center>
             <h3>Historial de Citas</h3>
             </center>
-            <form action="Search" method="get">
+            <form action="/Admin/Search" method="get">
                
                 <div class="input-group mb-3">
-                  
+                  <input type="text" class="form-control" name="usuarioId"  value=@data.usuarioId style="display:none" />
                   <input type="text" class="form-control" name="searchNombre" placeholder="Busqueda por nombre de alumno" aria-label="Recipient's username" aria-describedby="basic-addon2" value=@data.searchNombre />
-                  <input type="date" class="form-control" name="searchFecha"   value=@data.Fecha/>
+                  <input type="date" class="form-control" name="searchFecha" />
                   <div class="input-group-append">
                     <button class="btn btn-info" type="submit">Buscar</button>
                   </div>
